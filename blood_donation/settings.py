@@ -86,10 +86,14 @@ WSGI_APPLICATION = 'blood_donation.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+database_path = BASE_DIR / 'db.sqlite3'
+if os.getenv('VERCEL'):
+    database_path = Path('/tmp/db.sqlite3')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': database_path,
     }
 }
 
