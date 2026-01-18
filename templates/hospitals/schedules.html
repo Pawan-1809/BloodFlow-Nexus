@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Donation Schedules{% endblock %}
+{% block content %}
+<section class="px-6 py-16">
+  <div class="max-w-5xl mx-auto glass-card p-8">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-semibold">Donation Schedules</h2>
+      <a href="{% url 'hospitals:schedule_add' %}" class="btn-secondary"
+        >Add Schedule</a
+      >
+    </div>
+    <div class="space-y-4">
+      {% for schedule in schedules %}
+      <div class="rounded-xl border border-white/10 p-4 bg-white/5">
+        <div class="flex justify-between">
+          <p class="font-semibold">{{ schedule.donor_name }}</p>
+          <p class="text-sm text-slate-400">{{ schedule.status }}</p>
+        </div>
+        <p class="text-slate-300">
+          {{ schedule.scheduled_at|date:'M d, Y H:i' }}
+        </p>
+      </div>
+      {% empty %}
+      <p class="text-slate-400">No schedules yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,124 @@
+:root {
+  --glass: rgba(255, 255, 255, 0.06);
+  --stroke: rgba(255, 255, 255, 0.12);
+}
+
+body {
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+.glass-card {
+  background: var(--glass);
+  border: 1px solid var(--stroke);
+  border-radius: 20px;
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.45);
+}
+
+.feature-card,
+.stat-card {
+  background: var(--glass);
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+  padding: 20px;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.feature-card:hover,
+.stat-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(225, 29, 72, 0.5);
+  box-shadow: 0 20px 40px rgba(225, 29, 72, 0.15);
+}
+
+.badge {
+  display: inline-flex;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(225, 29, 72, 0.2);
+  color: #fecdd3;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: #e11d48;
+  color: #fff;
+  box-shadow: 0 15px 30px rgba(225, 29, 72, 0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px rgba(225, 29, 72, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.btn-secondary:hover {
+  border-color: rgba(225, 29, 72, 0.5);
+  color: #fecdd3;
+}
+
+.input {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: #fff;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 16px;
+  border-radius: 12px;
+  color: #fff;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: rgba(225, 29, 72, 0.6);
+  box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.2);
+}
+
+form p {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #cbd5f5;
+}
+
+form label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #cbd5f5;
+}

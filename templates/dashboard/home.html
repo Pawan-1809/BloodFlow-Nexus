@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block title %}BloodFlow Nexus{% endblock %}
+{% block content %}
+<section class="hero px-6 py-16 md:py-24">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+    <div class="space-y-6">
+      <span class="badge">Smart Matching • Real-time Alerts</span>
+      <h1 class="text-4xl md:text-5xl font-bold leading-tight">
+        Connect donors, hospitals, and patients in one intelligent
+        <span class="text-primary">blood donation ecosystem</span>.
+      </h1>
+      <p class="text-slate-300 text-lg">
+        Track requests, manage inventories, and mobilize nearby donors instantly
+        with automated reminders and eligibility checks.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a href="{% url 'accounts:register' %}" class="btn-primary"
+          >Join as Donor</a
+        >
+        <a href="{% url 'requests_app:create' %}" class="btn-secondary"
+          >Request Blood</a
+        >
+      </div>
+      <div class="grid grid-cols-3 gap-4 pt-6">
+        <div class="stat-card">
+          <p class="text-sm text-slate-400">Total Donors</p>
+          <p class="text-2xl font-semibold">{{ stats.donors }}</p>
+        </div>
+        <div class="stat-card">
+          <p class="text-sm text-slate-400">Active Requests</p>
+          <p class="text-2xl font-semibold">{{ stats.requests }}</p>
+        </div>
+        <div class="stat-card">
+          <p class="text-sm text-slate-400">Donations</p>
+          <p class="text-2xl font-semibold">{{ stats.donations }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="glass-card p-6">
+      <h3 class="text-xl font-semibold mb-4">Latest Emergency Requests</h3>
+      <div class="space-y-4">
+        {% for item in latest_requests %}
+        <div class="rounded-xl border border-white/10 p-4 bg-white/5">
+          <div class="flex justify-between items-center">
+            <span class="text-sm uppercase tracking-widest text-primary"
+              >{{ item.urgency }}</span
+            >
+            <span class="text-xs text-slate-400"
+              >{{ item.created_at|date:'M d, Y' }}</span
+            >
+          </div>
+          <p class="text-lg font-semibold">
+            {{ item.blood_group }} • {{ item.quantity_units }} units
+          </p>
+          <p class="text-sm text-slate-300">{{ item.hospital_location }}</p>
+        </div>
+        {% empty %}
+        <p class="text-slate-400">
+          No requests yet. Be the first to create one.
+        </p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="px-6 pb-20">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
+    <div class="feature-card">
+      <h4 class="text-lg font-semibold">Donor Availability Engine</h4>
+      <p class="text-slate-300">
+        Auto-disable donors who recently donated and notify them when eligible
+        again.
+      </p>
+    </div>
+    <div class="feature-card">
+      <h4 class="text-lg font-semibold">Hospital Inventory Control</h4>
+      <p class="text-slate-300">
+        Update stock levels in real-time and approve or assign donors instantly.
+      </p>
+    </div>
+    <div class="feature-card">
+      <h4 class="text-lg font-semibold">Location Smart Search</h4>
+      <p class="text-slate-300">
+        Filter donors by blood group, availability, and city proximity.
+      </p>
+    </div>
+  </div>
+  <div class="max-w-6xl mx-auto mt-10 glass-card p-6">
+    <h3 class="text-xl font-semibold mb-4">System Overview</h3>
+    <canvas id="statsChart" height="120"></canvas>
+  </div>
+  {% endblock %}
+  {% block extra_scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById('statsChart');
+    if (ctx) {
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Donors', 'Requests', 'Donations'],
+          datasets: [{
+            label: 'Totals',
+            data: [{{ stats.donors }}, {{ stats.requests }}, {{ stats.donations }}],
+            backgroundColor: ['#fb7185', '#f97316', '#38bdf8'],
+            borderRadius: 12,
+          }]
+        },
+        options: {
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: { ticks: { color: '#cbd5f5' } },
+            y: { ticks: { color: '#cbd5f5' } }
+          }
+        }
+      });
+    }
+  </script>
+  {% endblock %}
+</section>

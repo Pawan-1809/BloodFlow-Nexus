@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block extra_head %}
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""
+/>
+{% endblock %}
+{% block title %}Find Donors{% endblock %}
+{% block content %}
+<section class="px-6 py-16">
+  <div class="max-w-6xl mx-auto space-y-8">
+    <div class="glass-card p-6">
+      <h2 class="text-2xl font-semibold mb-4">Search Donors</h2>
+      <form method="get" class="grid md:grid-cols-3 gap-4">
+        <input
+          name="blood_group"
+          class="input"
+          placeholder="Blood Group (e.g., O+)"
+        />
+        <input name="city" class="input" placeholder="City" />
+        <select name="availability" class="input">
+          <option value="">Availability</option>
+          <option value="available">Available</option>
+          <option value="not_available">Not Available</option>
+        </select>
+        <button class="btn-primary md:col-span-3">Search</button>
+      </form>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      {% for donor in donors %}
+      <div class="feature-card">
+        <h3 class="text-xl font-semibold">{{ donor.user.username }}</h3>
+        <p class="text-slate-300">Blood Group: {{ donor.blood_group }}</p>
+        <p class="text-slate-300">City: {{ donor.user.city }}</p>
+        <p class="text-slate-300">
+          Status: {{ donor.is_available|yesno:'Available,Not Available' }}
+        </p>
+      </div>
+      {% empty %}
+      <p class="text-slate-400">No donors found. Try adjusting filters.</p>
+      {% endfor %}
+    </div>
+
+    <div class="glass-card p-6">
+      <h3 class="text-xl font-semibold mb-4">Nearby Donors Map</h3>
+      <div id="donorMap" class="h-80 rounded-2xl border border-white/10"></div>
+      <p class="text-xs text-slate-400 mt-3">
+        Set donor latitude/longitude to show map pins.
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block extra_scripts %}
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-o9N1j7kCkG/9mYuKyfBvFQZcNQ64pF7g1C2Jj2V+0XU="
+  crossorigin=""
+></script>
+<script>
+  const donorPoints = {{ donor_points|safe }};
+  const fallbackCenter = [28.6139, 77.209];
+  const map = L.map("donorMap").setView(fallbackCenter, 11);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "&copy; OpenStreetMap contributors",
+  }).addTo(map);
+
+  if (donorPoints.length) {
+    const bounds = [];
+    donorPoints.forEach((point) => {
+      const marker = L.marker([point.lat, point.lng]).addTo(map);
+      marker.bindPopup(
+        `${point.name} • ${point.blood_group} • ${point.city || "Unknown city"}`
+      );
+      bounds.push([point.lat, point.lng]);
+    });
+    map.fitBounds(bounds, { padding: [40, 40] });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Add Stock{% endblock %}
+{% block content %}
+<section class="px-6 py-16">
+  <div class="max-w-xl mx-auto glass-card p-8">
+    <h2 class="text-2xl font-semibold mb-6">Update Blood Stock</h2>
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn-primary w-full">Save Stock</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
