@@ -90,34 +90,34 @@
     <h3 class="text-xl font-semibold mb-4">System Overview</h3>
     <canvas id="statsChart" height="120"></canvas>
   </div>
-  {% endblock %}
-  {% block extra_scripts %}
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    const ctx = document.getElementById('statsChart');
-    if (ctx) {
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Donors', 'Requests', 'Donations'],
-          datasets: [{
-            label: 'Totals',
-            data: [{{ stats.donors }}, {{ stats.requests }}, {{ stats.donations }}],
-            backgroundColor: ['#fb7185', '#f97316', '#38bdf8'],
-            borderRadius: 12,
-          }]
-        },
-        options: {
-          plugins: {
-            legend: { display: false }
-          },
-          scales: {
-            x: { ticks: { color: '#cbd5f5' } },
-            y: { ticks: { color: '#cbd5f5' } }
-          }
-        }
-      });
-    }
-  </script>
-  {% endblock %}
 </section>
+{% endblock %}
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('statsChart');
+  if (ctx) {
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Donors', 'Requests', 'Donations'],
+        datasets: [{
+          label: 'Totals',
+          data: [{{ stats.donors }}, {{ stats.requests }}, {{ stats.donations }}],
+          backgroundColor: ['#fb7185', '#f97316', '#38bdf8'],
+          borderRadius: 12,
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          x: { ticks: { color: '#cbd5f5' } },
+          y: { ticks: { color: '#cbd5f5' } }
+        }
+      }
+    });
+  }
+</script>
+{% endblock %}
